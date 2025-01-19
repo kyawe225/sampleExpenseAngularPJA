@@ -1,0 +1,69 @@
+<div class="container">
+    @if(message != "" && success == true){
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    }@else{
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+    }
+    <div class="d-flex my-2">
+        <h3 class="col-md-5">Expense Lists</h3>
+        <div class="col-12 col-md-5 ms-auto">
+            <a href="/expense/create" class="btn btn-primary float-end">+ Create</a>
+        </div>
+    </div>
+
+    <div class="d-flex mb-2">
+        <div class="col-6">
+            <input type="text" class="form-control" [(ngModel)] = "searchBox"/>
+        </div>
+        <div class="ms-auto row col-5">
+            <div class="col-7">
+                <select class="form-select" [(ngModel)] = "searchCritea">
+                    <option> Show All</option>
+                    <option> Current Month</option>
+                    <option> Previous Month </option>
+                    <option> Only By You </option>
+                    <option> Not You </option>
+                    <option> Current Year </option>
+                    <option> Previous Year </option>
+                </select>
+            </div>
+            <div class="col-5">
+                <button type="button" class="btn btn-primary col-5 w-100">Export Current Data</button>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Id #</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Total Amount</th>
+                <th class="text-center">Created Date</th>
+                <th class="text-center">Is Completed</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(i of items; track i ; let index = $index){
+                <tr>
+                    <td>{{index}}</td>
+                    <td>{{i.userName}}</td>
+                    <td>{{i.totalAmount}}</td>
+                    <td>{{showAsDateTime(i.usedDate).toLocaleDateString('en-US')}}</td>
+                    <td>{{i.is_completed}}</td>
+                    <td>
+                        <div class="row g-2 justify-content-center flex">
+                            <button class="btn btn-danger col-4 m-2" (click)="deleteConfirmation(i.id!!)">Delete</button>
+                            <a class="btn btn-secondary col-3 m-2" href="/expense/update/{{i.id}}">Edit</a>
+                        </div>
+                    </td>
+                </tr>    
+            }
+        </tbody>
+    </table>
+</div>

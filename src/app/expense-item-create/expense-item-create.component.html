@@ -1,0 +1,70 @@
+<div class="m-2">
+    @if(message != "")
+    {
+        <div class="alert alert-danger">{{message}}</div>
+    }
+    <form [formGroup]="formGroup">
+        <div class="m-1">
+            <label class="form-label"> Title </label>
+            <input type="text" class="form-control" name="title" formControlName="title" />
+        </div>
+
+        <div class="m-1">
+            <label class="form-label"> User Name (You or Other Person) </label>
+            <input type="text" class="form-control" name="password" formControlName="userName" />
+        </div>
+
+        <div class="m-1">
+            <label class="form-label"> Description </label>
+            <textarea formControlName="description" class="form-control"></textarea>
+        </div>
+
+        <div class="m-1">
+            <label class="form-label"> Used Date </label>
+            <input type="date" class="form-control" name="usedDate" formControlName="usedDate" />
+        </div>
+        <div class="container py-2">
+            <div class="m-1">
+                <button (click)="addExpenseItem()" class="btn btn-primary">Add Entry </button>
+            </div>
+    
+            <table formArrayName="entryDetails" class="table table-bordered">
+                <tr>
+                    <th class="text-center">Title</th>
+                    <th class="text-center">UserName</th>
+                    <th class="text-center">Amount</th>
+                    <th class="text-center">Description</th>
+                </tr>
+                @for(i of entryDetails.controls; track i;let index = $index){
+                    <tr formGroupName="{{$index}}">
+                        <td class="p-2">
+                            <input type="text" formControlName="title" class="form-control m-2" />
+                        </td>
+                        <td class="p-2">
+                            <input type="text" formControlName="userName" class="form-control m-2" />
+                        </td>
+                        <td class="p-2">
+                            <input type="text" formControlName="amount" class="form-control m-2" />
+                        </td>
+                        <td class="p-2">
+                            <input type="text" formControlName="description" class="form-control m-2" />
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div class="m-1">
+            <label class="form-label"> Total Amount </label>
+            <input type="text" #totalAmt class="form-control" formControlName="totalAmount" />
+        </div>
+        <div class="m-1">
+            <input type="checkbox" #totalAmt class="form-check-input" formControlName="is_completed" />
+            <label class="form-check-label"> is Completed </label>
+        </div>
+        
+        <div class="m-1">
+            <button class="btn btn-primary" (click)="submit()">Submit</button>
+        </div>
+    </form>
+</div>

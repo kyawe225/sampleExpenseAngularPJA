@@ -1,0 +1,22 @@
+<div class="m-2" >
+    @if(message != "")
+    {
+        <div class="alert alert-danger">{{message}}</div>
+    }
+    <form [formGroup]="formGroup">
+        <div class="m-1">
+            <label class="form-label"> Email </label>
+            <input type="email" class="form-control" name="email" formControlName="email" />    
+        </div>
+
+        <div class="m-1">
+            <label class="form-label"> Password </label>
+            <input type="password" class="form-control" name="password" formControlName = "password"/>    
+        </div>
+        <div>If you don't have a account click <a href="/auth/register">Register</a>.</div>
+
+        <div class="m-1">
+            <button class="btn btn-primary" (click)="submit()">Login</button>
+        </div>
+    </form>
+</div>
