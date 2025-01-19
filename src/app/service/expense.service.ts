@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { ExpenseCreate } from '../model/expense';
+import { ExpenseCreate, ExpenseSarchRequest } from '../model/expense';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,10 @@ export class ExpenseService {
 
   getAll() {
     return this.http.get(this.baseUrl + this.baseUri);
+  }
+
+  getPaginated(model : ExpenseSarchRequest){
+    return this.http.post(this.baseUrl + this.baseUri + "/paginated",model);
   }
 
   getDetail(id: string) {

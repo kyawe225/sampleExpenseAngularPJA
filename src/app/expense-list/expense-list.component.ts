@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Expense } from '../model/expense';
+import { Expense, ExpenseSarchRequest } from '../model/expense';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from '../service/message.service';
 import { ExpenseService } from '../service/expense.service';
 import { ModelDeleteComponent } from '../shared/model-delete/model-delete.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-expense-list',
   imports: [
-    FormsModule
+    FormsModule,
+    NgbPaginationModule
   ],
   templateUrl: './expense-list.component.html',
   styleUrl: './expense-list.component.css'
@@ -22,9 +23,23 @@ export class ExpenseListComponent implements OnInit {
   searchCritea = "";
   searchBox = "";
   success = false;
+  total = 0;
+  private paginatedObj : ExpenseSarchRequest = {
+    pageNumber: 1,
+    pageSize: 10,
+    SearchCriteria: "",
+    SearchFilter: ""
+  } 
+  page = 1;
+  
 
   constructor(private router: Router, private service : ExpenseService, private messageService: MessageService, private modalService : NgbModal) {
 
+  }
+
+  pageChange(event : number){
+    this.paginatedObj.pageNumber = event;
+    this.getExpenseList();
   }
 
   ngOnInit() {
@@ -42,10 +57,18 @@ export class ExpenseListComponent implements OnInit {
     }, 1000)
   }
 
+  search(){
+    this.paginatedObj.SearchCriteria = this.searchCritea;
+    this.paginatedObj.SearchFilter = this.searchBox;
+    this.getExpenseList();
+  }
+
   private getExpenseList(){
-    this.service.getAll().subscribe({
+    this.service.getPaginated(this.paginatedObj).subscribe({
       next : (value :any)=>{
         this.items = value.data;
+        this.total = value.total;
+        this.page = value.page;
       },
       error: (err)=>{
         console.error(err)
